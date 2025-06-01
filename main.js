@@ -3,6 +3,11 @@ let items = []
 function addItem() {
     const itemName = document.querySelector("#item").value
 
+    if (itemName === ""){
+        alert("Digite um item válido!")
+        return
+    }
+
     const item = {
         name: itemName,
         checked: false
@@ -17,20 +22,21 @@ function addItem() {
 
 function showItemsList() {
     const sectionList = document.querySelector(".list")
-
     sectionList.textContent = ""
-   
+
+    items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
+
     items.map((item, index) => {
         sectionList.innerHTML += `
             <div class="item">
                 <div>
-                    <input type="checkbox" name="List" id="${index}" ${item.checked && "checked"}>
+                    <input type="checkbox" name="list" id="item-${index}" ${item.checked && "checked"}>
 
                     <div class="custom-checkbox" onclick="checkItem('${item.name}')">
                         <img src="./assets/checked.svg" alt="checked">
                     </div>
 
-                    <label for="${index}" onclick="checkItem('${item.name}')">${item.name}</label>
+                    <label for="item-${index}" onclick="checkItem('${item.name}')">${item.name}</label>
                 </div>
 
                 <button onclick="removeItem('${item.name}')">
@@ -40,9 +46,6 @@ function showItemsList() {
         `
     })
 
-       items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
-
-
     localStorage.setItem("items", JSON.stringify(items))
 }
 
@@ -51,27 +54,30 @@ function removeItem(itemName) {
     const divWarning = document.querySelector(".warning")
 
     divWarning.classList.remove("hide-warning")
-    
-     setTimeout(() => {
+
+    setTimeout(() => {
         divWarning.classList.add("hide-warning")
     }, 4000)
 
     if (itemIndex !== -1) {
-        items.splice(itemIndex, 1);
+        items.splice(itemIndex, 1)
     }
 
     showItemsList()
 }
+
 
 function addHideWarningClass() {
     document.querySelector(".warning").classList.add("hide-warning")
 }
 
 function checkItem(itemName) {
-    const item = items.find((item) => item.name === item.name)
-    item.checked = !item.checked
-    showItemsList()
+    const item = items.find((item) => item.name === itemName)
 
+    if (item) {
+        item.checked = !item.checked
+        showItemsList()
+    }
 }
 
 function verifyLocalStorageItems() {

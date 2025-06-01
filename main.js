@@ -19,7 +19,7 @@ function showItemsList() {
     const sectionList = document.querySelector(".list")
 
     sectionList.textContent = ""
-
+   
     items.map((item, index) => {
         sectionList.innerHTML += `
             <div class="item">
@@ -39,6 +39,9 @@ function showItemsList() {
             </div>
         `
     })
+
+       items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
+
 
     localStorage.setItem("items", JSON.stringify(items))
 }
@@ -82,3 +85,4 @@ function verifyLocalStorageItems() {
 }
 
 verifyLocalStorageItems()
+

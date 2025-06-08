@@ -20,6 +20,8 @@ function showItemsList() {
 
     sectionList.textContent = ""
 
+    items.sort((itemA, itemB) => Number(itemA.checked) - Number(itemB.checked))
+
     items.map((item, index) => {
         sectionList.innerHTML += `
             <div class="item">
@@ -38,7 +40,7 @@ function showItemsList() {
                 </button>
             </div>
         `
-    })
+    }) 
 
     localStorage.setItem("items", JSON.stringify(items))
 }
